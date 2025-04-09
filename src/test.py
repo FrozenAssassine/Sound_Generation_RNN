@@ -1,18 +1,19 @@
-from music21 import converter, instrument, note, chord, stream
+from music21 import  instrument, note, chord, stream
 
-from data_processing import get_training_data, shape_data
+from data_processing import load_training_data, shape_data
 from model import create_model, predict_notes
 import config
 
-pitch_names, all_notes, note_to_int, int_to_note, notes_in, notes_out = get_training_data(config.MIDIPATH, config.NOTE_SEQUENCE_LENGTH)
-X, y, vocab_size = shape_data(notes_in, notes_out, all_notes, config.NOTE_SEQUENCE_LENGTH)
+#get the data:
+data_processing = load_training_data(config.MODEL_NAME)
+X, y, vocab_size = data_processing.shape_data(config.NOTE_SEQUENCE_LENGTH)
 
 model = create_model(X, vocab_size)
 model.summary()
 
 model.load_weights(config.MODEL_PATH)
 
-prediction_output, start, pattern = predict_notes(model, notes_in, vocab_size, int_to_note, config.SONG_LENGTH)
+prediction_output, start, pattern = predict_notes(model, data_processing.notes_in, vocab_size, data_processing.all_notes, config.SONG_LENGTH)
 
 
 def make_note(current_note):

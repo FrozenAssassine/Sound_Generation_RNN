@@ -1,15 +1,17 @@
 from keras.optimizers import Adam
 from keras.losses import CategoricalCrossentropy
 
-from data_processing import get_training_data, shape_data
+from data_processing import DataProcessing
 from model import create_model
 import matplotlib.pyplot as plt
 import config
 import tensorflow as tf
 
-
-pitch_names, all_notes, note_to_int, int_to_note, notes_in, notes_out = get_training_data(config.MIDIPATH, config.NOTE_SEQUENCE_LENGTH)
-X, y, vocab_size = shape_data(notes_in, notes_out, all_notes, config.NOTE_SEQUENCE_LENGTH)
+#get the data:
+data_processing = DataProcessing()
+data_processing.get_training_data(config.MIDIPATH, config.NOTE_SEQUENCE_LENGTH, config.TRAINING_FILE_COUNT)
+data_processing.save_data(config.MODEL_DATA_PATH)
+X, y, vocab_size = data_processing.shape_data(config.NOTE_SEQUENCE_LENGTH)
 
 model = create_model(X, vocab_size)
 
