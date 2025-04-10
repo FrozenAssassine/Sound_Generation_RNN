@@ -1,11 +1,11 @@
-from music21 import  instrument, note, chord, stream
+from music21 import instrument, note, chord, stream
 
-from data_processing import load_training_data, shape_data
+from data_processing import load_training_data
 from model import create_model, predict_notes
 import config
 
-#get the data:
-data_processing = load_training_data(config.MODEL_NAME)
+# get the data:
+data_processing = load_training_data(config.MODEL_DATA_PATH)
 X, y, vocab_size = data_processing.shape_data(config.NOTE_SEQUENCE_LENGTH)
 
 model = create_model(X, vocab_size)

@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from keras.models import Sequential
-from keras.layers import LSTM, Dense, Dropout, InputLayer
+from keras.layers import LSTM, Dense, Dropout, InputLayer, BatchNormalization
 
 
 def predict_notes(model, notes_in, vocab_size, int_to_note, song_length):
@@ -27,10 +27,10 @@ def create_model(input_data, vocab_size):
     model = Sequential()
     model.add(InputLayer(shape=(input_data.shape[1], input_data.shape[2])))
     model.add(LSTM(512, return_sequences=True))
-    model.add(Dropout(0.3))
+    model.add(Dropout(0.2))
     model.add(LSTM(512))
     model.add(Dense(256))
-    model.add(Dropout(0.3))
+    model.add(Dropout(0.2))
     model.add(Dense(vocab_size, activation='softmax'))
 
     return model
