@@ -6,14 +6,16 @@ import config
 
 # get the data:
 data_processing = load_training_data(config.MODEL_DATA_PATH)
-X, y, vocab_size = data_processing.shape_data(config.NOTE_SEQUENCE_LENGTH)
+X_notes, X_style, y, vocab_size = data_processing.shape_data(config.NOTE_SEQUENCE_LENGTH)
 
-model = create_model(X, vocab_size)
+model = create_model(X_notes.shape[1:], vocab_size, X_style.shape[1])
 model.summary()
 
 model.load_weights(config.MODEL_PATH)
 
-prediction_output, start, pattern = predict_notes(model, data_processing.notes_in, vocab_size, data_processing.all_notes, config.SONG_LENGTH)
+print(data_processing.styles)
+
+prediction_output = predict_notes(model, data_processing.notes_in, vocab_size, data_processing.int_to_note, config.SONG_LENGTH, [1, 1, 1])
 
 
 def make_note(current_note):

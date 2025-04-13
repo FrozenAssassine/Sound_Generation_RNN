@@ -14,9 +14,9 @@ import tensorflow as tf
 # data_processing.save_data(config.MODEL_DATA_PATH)
 
 data_processing = load_training_data(config.MODEL_DATA_PATH)
-X, y, vocab_size = data_processing.shape_data(config.NOTE_SEQUENCE_LENGTH)
+X_notes, X_style, y, vocab_size = data_processing.shape_data(config.NOTE_SEQUENCE_LENGTH)
 
-model = create_model(X, vocab_size)
+model = create_model(X_notes.shape[1:], vocab_size, X_style.shape[1])
 
 model.load_weights(config.MODEL_PATH)
 
@@ -28,7 +28,7 @@ lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
 model.compile(loss=CategoricalCrossentropy(), optimizer=Adam(learning_rate=lr_schedule),  metrics=['accuracy'])
 
 
-history = model.fit(X, y, epochs=config.EPOCHS, batch_size=config.BATCHES)
+history = model.fit([X_notes, X_style], y, epochs=config.EPOCHS, batch_size=config.BATCHES)
 model.save(config.MODEL_PATH)
 
 
