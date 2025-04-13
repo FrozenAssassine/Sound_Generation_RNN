@@ -22,3 +22,8 @@ I used **FL Studio** to test the output.
 - Python
 - TensorFlow / Keras (RNN with LSTM Layer)
 - music21
+
+## 🎶 Example Audio from my Model:
+
+[](https://github.com/user-attachments/assets/85047b89-8b28-4c3e-bb40-06efef766bc7)
+
